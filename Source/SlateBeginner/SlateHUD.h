@@ -25,4 +25,7 @@ public:
 private:
 	TSharedPtr<SFirstCompoundWidget> UIPtr;
 	TSharedPtr<SWeakWidget> WidgetContainer;  // ?? 为什么要用SWeakWidget
+
+	UClass* UMGClass;
+	TObjectPtr<UUserWidget> UMGWidget;
 };

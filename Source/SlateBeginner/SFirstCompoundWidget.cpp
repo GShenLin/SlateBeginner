@@ -3,6 +3,7 @@
 
 #include "SFirstCompoundWidget.h"
 #include "SlateOptMacros.h"
+#include "Blueprint/UserWidget.h"
 #include "Widgets/Layout/SBackgroundBlur.h"
 
 #define LOCTEXT_NAMESPACE "SFirstCompoundWidget"
@@ -10,6 +11,7 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SFirstCompoundWidget::Construct(const FArguments& InArgs)
 {
 	OwnerHUD = InArgs._OwnerHUDArg;
+	OtherWidget = InArgs._OtherWidgetArg;
 	
 	const FMargin ContentPadding = FMargin(500.0f,300.f); // Padding around the content
 	const FMargin ButtonPadding = FMargin(20.0f); // Padding around the buttons
@@ -41,6 +43,13 @@ void SFirstCompoundWidget::Construct(const FArguments& InArgs)
 			SNew(SBackgroundBlur)
 			.BlurStrength(0.5f)
 		]
+
+		// 添加其他UMG元素的示例
+		/*+SOverlay::Slot()
+		.HAlign(HAlign_Fill).VAlign(VAlign_Fill)
+		[
+			OtherWidget.Get()->TakeWidget()
+		]*/
 
 		+SOverlay::Slot()
 		.HAlign(HAlign_Center).VAlign(VAlign_Center)
