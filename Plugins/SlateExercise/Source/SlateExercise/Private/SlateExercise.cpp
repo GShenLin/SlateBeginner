@@ -16,21 +16,25 @@ static const FName SlateExerciseTabName("SlateExercise");
 void FSlateExerciseModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
+
+	// 初始化样式 加载图片
 	FSlateExerciseStyle::Initialize();
 	FSlateExerciseStyle::ReloadTextures();
 
+	// 注册命令
 	FSlateExerciseCommands::Register();
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
+	// 绑定命令
 	PluginCommands->MapAction(
 		FSlateExerciseCommands::Get().OpenPluginWindow,
 		FExecuteAction::CreateRaw(this, &FSlateExerciseModule::PluginButtonClicked),
 		FCanExecuteAction());
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FSlateExerciseModule::RegisterMenus));
-	
+
+	// 弹出的窗口
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(SlateExerciseTabName, FOnSpawnTab::CreateRaw(this, &FSlateExerciseModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FSlateExerciseTabTitle", "SlateExercise"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
