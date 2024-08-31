@@ -54,14 +54,6 @@ Plugins/*/Binaries/*
 # Binary Files
 Plugins/*/Resources/*
 
-# Content
-Content/*
-Plugins/*/Content/*
-
-# Config
-Config/*
-Plugins/*/Config/*
-
 # Builds
 Build/*
 
