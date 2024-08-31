@@ -11,7 +11,12 @@ class FMenuBuilder;
 class FSlateExerciseModule : public IModuleInterface
 {
 public:
+	void AddToolbarExtension(FToolBarBuilder& ToolBarBuilder);
 
+	void AddMenuBarExtension(FMenuBarBuilder& MenuBarBuilder);
+
+	void AddMenuExtension(FMenuBuilder& MenuBuilder);
+	
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
