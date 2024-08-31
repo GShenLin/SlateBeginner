@@ -9,6 +9,7 @@
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SFirstCompoundWidget::Construct(const FArguments& InArgs)
 {
+	OwnerHUD = InArgs._OwnerHUDArg;
 	
 	const FMargin ContentPadding = FMargin(500.0f,300.f); // Padding around the content
 	const FMargin ButtonPadding = FMargin(20.0f); // Padding around the buttons
@@ -58,6 +59,7 @@ void SFirstCompoundWidget::Construct(const FArguments& InArgs)
 			[
 				SNew(SButton)
 				.Text(PlayText)
+				.OnClicked(this,&SFirstCompoundWidget::OnPlayClicked)
 				[
 					SNew(STextBlock)
 					.Font(ButtonTextStyle)
@@ -70,16 +72,35 @@ void SFirstCompoundWidget::Construct(const FArguments& InArgs)
 			.Padding(ButtonPadding)
 			[
 				SNew(SButton)
-				.Text(QuitText)
+				.OnClicked(this,&SFirstCompoundWidget::OnQuitClicked)
 				[
 					SNew(STextBlock)
 					.Font(ButtonTextStyle)
-					.Text(PlayText)
+					.Text(QuitText)
 					.Justification(ETextJustify::Center)
 				]
 			]
 		]
 	];
 }
+
+FReply SFirstCompoundWidget::OnPlayClicked() const
+{
+	if (OwnerHUD.IsValid())
+	{
+		OwnerHUD->RemoveSlate();
+	}
+	return FReply::Handled();
+}
+
+FReply SFirstCompoundWidget::OnQuitClicked() const
+{
+	if (OwnerHUD.IsValid())
+	{
+		OwnerHUD->PlayerOwner->ConsoleCommand("quit");
+	}
+	return FReply::Handled();
+}
+
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 #undef LOCTEXT_NAMESPACE

@@ -19,6 +19,9 @@ class SLATEBEGINNER_API ASlateHUD : public AHUD
 public:
 	virtual void BeginPlay() override;
 
+	// 移除自己添加的UI
+	void RemoveSlate();
+
 private:
 	TSharedPtr<SFirstCompoundWidget> UIPtr;
 	TSharedPtr<SWeakWidget> WidgetContainer;  // ?? 为什么要用SWeakWidget
