@@ -11,6 +11,10 @@
 
 static const FName SlateExerciseTabName("SlateExercise");
 
+// 自定义的弹出窗口的名称
+static const FName MyWindowTabName1("MyWindow1");
+static const FName MyWindowTabName2("MyWindow2");
+
 #define LOCTEXT_NAMESPACE "FSlateExerciseModule"
 
 void FSlateExerciseModule::AddToolbarExtension(FToolBarBuilder& ToolBarBuilder)
@@ -55,6 +59,15 @@ void FSlateExerciseModule::StartupModule()
 	// 弹出的窗口
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(SlateExerciseTabName, FOnSpawnTab::CreateRaw(this, &FSlateExerciseModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FSlateExerciseTabTitle", "SlateExercise"))
+		.SetMenuType(ETabSpawnerMenuType::Hidden);
+
+	// 自定义弹出的窗口 准备制作有两个界面并排的窗口
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(MyWindowTabName1, FOnSpawnTab::CreateRaw(this, &FSlateExerciseModule::OnSpawnMyWindow1))
+		.SetDisplayName(LOCTEXT("FSlateExerciseWindowTitle1", "SlateExerciseWindow1"))
+		.SetMenuType(ETabSpawnerMenuType::Hidden);
+
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(MyWindowTabName2, FOnSpawnTab::CreateRaw(this, &FSlateExerciseModule::OnSpawnMyWindow2))
+		.SetDisplayName(LOCTEXT("FSlateExerciseWindowTitle2", "SlateExerciseWindow2"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
 	// 为了往扩展点里添加元素 先要拿到编辑器的模块
@@ -102,24 +115,49 @@ void FSlateExerciseModule::ShutdownModule()
 
 TSharedRef<SDockTab> FSlateExerciseModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText WidgetText = FText::Format(
-		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
-		FText::FromString(TEXT("FSlateExerciseModule::OnSpawnPluginTab")),
-		FText::FromString(TEXT("SlateExercise.cpp"))
-		);
 
-	return SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab)
-		[
-			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
-		];
+	const TSharedRef<SDockTab> NomedTab = SNew(SDockTab).TabRole(NomadTab);
+
+	// 如果自定义的管理器和布局不存在 创建一个  并且将两个窗口添加到布局中
+	if (!MyWindowTabManager.IsValid())
+	{
+		MyWindowTabManager = FGlobalTabmanager::Get()->NewTabManager(NomedTab);
+		MyWindowLayout = FTabManager::NewLayout("MyLayout")
+			->AddArea
+			(
+				FTabManager::NewPrimaryArea()
+				->SetOrientation(Orient_Horizontal)
+				->Split
+				(
+					// 这段是自动提示的 可能这么做也可以？
+					/*FTabManager::NewStack()
+					->AddTab(MyWindowTabName1, ETabState::OpenedTab)
+					->AddTab(MyWindowTabName2, ETabState::OpenedTab)*/
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.5f)
+					->AddTab(MyWindowTabName1,ETabState::OpenedTab)
+				)
+				->Split(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.5f)
+					->AddTab(MyWindowTabName2,ETabState::OpenedTab)
+				)
+			);
+	}
+	
+	TSharedRef<SWidget> TabContent = MyWindowTabManager->RestoreFrom(MyWindowLayout.ToSharedRef(),TSharedPtr<SWindow>()).ToSharedRef();
+	NomedTab->SetContent(TabContent);
+	return NomedTab;
+}
+
+TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs)
+{
+	return SNew(SDockTab);
+}
+
+TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow1(const class FSpawnTabArgs& SpawnTabArgs)
+{
+	return SNew(SDockTab);
 }
 
 void FSlateExerciseModule::PluginButtonClicked()

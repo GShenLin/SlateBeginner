@@ -30,6 +30,18 @@ private:
 
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
 
+	// 当自定义的弹出窗口1打开时的回调
+	TSharedRef<class SDockTab> OnSpawnMyWindow1(const class FSpawnTabArgs& SpawnTabArgs);
+
+	// 当自定义的弹出窗口2打开时的回调
+	TSharedRef<class SDockTab> OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs);
+
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+
+	// 自己展开窗口的管理器
+	TSharedPtr<FTabManager> MyWindowTabManager;
+
+	// 布局也是要单独保存的
+	TSharedPtr<FTabManager::FLayout> MyWindowLayout;
 };
