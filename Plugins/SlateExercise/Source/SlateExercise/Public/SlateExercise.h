@@ -36,6 +36,9 @@ private:
 	// 当自定义的弹出窗口2打开时的回调
 	TSharedRef<class SDockTab> OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs);
 
+	// 在点击Tab的关闭按钮时的回调
+	bool CanCloseTab();
+
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
 
@@ -44,4 +47,7 @@ private:
 
 	// 布局也是要单独保存的
 	TSharedPtr<FTabManager::FLayout> MyWindowLayout;
+
+	// 用于显示Canvas的Tab
+	TSharedPtr<SDockTab> MainCanvasTab;
 };

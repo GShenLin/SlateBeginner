@@ -4,6 +4,7 @@
 #include "SlateExerciseStyle.h"
 #include "SlateExerciseCommands.h"
 #include "LevelEditor.h"
+#include "SMyCanvas.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
@@ -56,7 +57,7 @@ void FSlateExerciseModule::StartupModule()
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FSlateExerciseModule::RegisterMenus));
 
-	// 注册弹出的窗口 后续演示自定义窗口后 没用Tab的方式了
+	// 注册弹出的窗口 
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(SlateExerciseTabName, FOnSpawnTab::CreateRaw(this, &FSlateExerciseModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FSlateExerciseTabTitle", "SlateExercise"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
@@ -151,12 +152,31 @@ TSharedRef<SDockTab> FSlateExerciseModule::OnSpawnPluginTab(const FSpawnTabArgs&
 	return NomedTab;
 }
 
-TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs)
+bool FSlateExerciseModule::CanCloseTab()
 {
-	return SNew(SDockTab);
+	return true;
 }
 
 TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow1(const class FSpawnTabArgs& SpawnTabArgs)
+{
+	if (MainCanvasTab == nullptr)
+	{
+		// 声明自己的DockTab 准备装填自己的Canvas
+		SAssignNew(MainCanvasTab,SDockTab)
+		// 绑定点击关闭按钮的回调
+		.OnCanCloseTab(SDockTab::FCanCloseTab::CreateRaw(this,&FSlateExerciseModule::CanCloseTab))
+		// 表示这个Tab的角色 是否能够合并什么的
+		.TabRole(MajorTab)
+		//设置Padding
+		.ContentPadding(FMargin(0));
+
+		// 将自定义的Canvas 设置为DockTab的内容
+		MainCanvasTab->SetContent(SNew(SMyCanvas));
+	}
+	return MainCanvasTab.ToSharedRef();
+}
+
+TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab);
 }
@@ -164,16 +184,17 @@ TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow1(const class FS
 void FSlateExerciseModule::PluginButtonClicked()
 {
 	// 原本的方式 唤起一个Tab
-	//  FGlobalTabmanager::Get()->TryInvokeTab(SlateExerciseTabName);
+	 FGlobalTabmanager::Get()->TryInvokeTab(SlateExerciseTabName);
 
-	auto NewWindow = SNew(SWindow)
+	// 这里是演示如何使用SWindow  以及FSlateApplication
+	/*auto NewWindow = SNew(SWindow)
 		.Title(FText::FromString("MyCustomWindow")) // 标题
 		.ClientSize(FVector2d(600,600))  // 大小
 		[
 			// 窗口中填充的内容
 			SNew(SSpacer)
 		];
-	FSlateApplication::Get().AddWindow(NewWindow);
+	FSlateApplication::Get().AddWindow(NewWindow);*/
 }
 
 void FSlateExerciseModule::RegisterMenus()
