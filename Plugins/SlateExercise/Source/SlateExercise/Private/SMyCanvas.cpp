@@ -99,6 +99,30 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			]
 			
 		];
+
+	// 分割器 SSplitter
+	AddSlot()
+		.Position(FVector2d(300,450))
+		.Size(FVector2d(200,200))
+		[
+			SNew(SSplitter)
+			+SSplitter::Slot()
+			[
+				SNew(SButton)
+				[
+					SNew(STextBlock)
+					.Text(FText::FromString("MyButton1"))
+				]
+			]
+			+SSplitter::Slot()
+			[
+				SNew(SButton)
+				[
+					SNew(STextBlock)
+					.Text(FText::FromString("MyButton2"))
+				]
+			]
+		];
 	/*
 	ChildSlot
 	[
