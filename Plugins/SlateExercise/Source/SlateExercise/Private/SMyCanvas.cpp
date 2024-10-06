@@ -32,7 +32,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 	Options.Add(MakeShareable(new FString("Three")));
 	
 	AddSlot()
-		.Position(FVector2d(500,100))
+		.Position(FVector2d(300,300))
 		.Size(FVector2d(100,50))
 		[
 			SAssignNew(ComboBox,SComboBox<TSharedPtr<FString>>)
@@ -49,7 +49,27 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			]
 		];
 
-	
+	// 水平布局盒子
+	AddSlot()
+		.Position(FVector2d(300,500))
+		.Size(FVector2d(100,50))
+		[
+			SNew(SHorizontalBox)
+			+SHorizontalBox::Slot()
+			.FillWidth(2.0) // 这个代表占有的比例 默认是1 2.0表示此控件所占权重为2 与下边的两个插槽分别为 2 1 1
+			.HAlign(HAlign_Fill) // 填充
+			[
+				SNew(SButton)
+			]
+			+SHorizontalBox::Slot()
+			[
+				SNew(SButton)
+			]
+			+SHorizontalBox::Slot()
+			[
+				SNew(SButton)
+			]
+		];
 	/*
 	ChildSlot
 	[
