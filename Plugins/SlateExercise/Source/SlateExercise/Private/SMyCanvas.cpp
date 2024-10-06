@@ -32,7 +32,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 	Options.Add(MakeShareable(new FString("Three")));
 	
 	AddSlot()
-		.Position(FVector2d(300,300))
+		.Position(FVector2d(300,200))
 		.Size(FVector2d(100,50))
 		[
 			SAssignNew(ComboBox,SComboBox<TSharedPtr<FString>>)
@@ -51,7 +51,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 
 	// 水平布局盒子
 	AddSlot()
-		.Position(FVector2d(300,500))
+		.Position(FVector2d(300,300))
 		.Size(FVector2d(100,50))
 		[
 			SNew(SHorizontalBox)
@@ -69,6 +69,35 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			[
 				SNew(SButton)
 			]
+		];
+
+	// 可编辑文本框
+	AddSlot()
+		.Position(FVector2d(300,400))
+		.Size(FVector2d(200,50))
+		[
+			SNew(SVerticalBox)
+			+SVerticalBox::Slot()
+			.HAlign(HAlign_Fill)
+			[
+				SNew(SEditableText)
+				.Justification(ETextJustify::Left) // 文本对齐方式
+				.HintText(FText::FromString("Name")) // 默认文本
+				.Font(FCoreStyle::Get().GetFontStyle("Embossedtext")) // 字体 后续会自定义
+				.ToolTipText(FText::FromString("MyCustomEditableText")) // 提示文本
+				.ColorAndOpacity(FSlateColor::UseForeground()) // 颜色
+			]
+			+SVerticalBox::Slot()
+			.HAlign(HAlign_Fill)
+			[
+				SNew(SEditableText)
+				.Justification(ETextJustify::Left) // 文本对齐方式
+				.HintText(FText::FromString("Password")) // 默认文本
+				.Font(FCoreStyle::Get().GetFontStyle("Embossedtext")) // 字体 后续会自定义
+				.ToolTipText(FText::FromString("MyCustomEditableText")) // 提示文本
+				.ColorAndOpacity(FSlateColor::UseForeground()) // 颜色
+			]
+			
 		];
 	/*
 	ChildSlot
