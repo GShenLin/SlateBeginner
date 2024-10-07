@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SlateExerciseStyle.h"
+
+#include "MyMainWidgetStyle.h"
 #include "Styling/SlateStyleRegistry.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Slate/SlateGameResources.h"
@@ -38,11 +40,20 @@ const FVector2D Icon20x20(20.0f, 20.0f);
 
 TSharedRef< FSlateStyleSet > FSlateExerciseStyle::Create()
 {
-	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("SlateExerciseStyle"));
+	/*TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("SlateExerciseStyle"));
 	Style->SetContentRoot(IPluginManager::Get().FindPlugin("SlateExercise")->GetBaseDir() / TEXT("Resources"));
 
-	Style->Set("SlateExercise.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon20x20));
+	Style->Set("SlateExercise.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon20x20));*/
 
+	// 我这里是放在插件里的 所以是插件的路径
+	TSharedRef< FSlateStyleSet > Style = FSlateGameResources::New(
+		FMainWidgetStyle::TypeName,
+		"/SlateExercise/NewSlateWidgetStyleAsset","/SlateExercise/NewSlateWidgetStyleAsset");
+
+	// 插件的图片设置
+	FString ImagePath =  IPluginManager::Get().FindPlugin("SlateExercise")->GetBaseDir() / TEXT("Resources/Snipaste.png");
+	Style->Set("SlateExercise.OpenPluginWindow", new FSlateImageBrush(ImagePath, Icon20x20));
+	
 	return Style;
 }
 

@@ -2,6 +2,9 @@
 
 
 #include "SMyCanvas.h"
+
+#include "MyMainWidgetStyle.h"
+#include "SlateExerciseStyle.h"
 #include "SlateOptMacros.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -83,6 +86,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 				SNew(SEditableText)
 				.Justification(ETextJustify::Left) // 文本对齐方式
 				.HintText(FText::FromString("Name")) // 默认文本
+				
 				.Font(FCoreStyle::Get().GetFontStyle("Embossedtext")) // 字体 后续会自定义
 				.ToolTipText(FText::FromString("MyCustomEditableText")) // 提示文本
 				.ColorAndOpacity(FSlateColor::UseForeground()) // 颜色
@@ -112,7 +116,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 				[
 					SNew(STextBlock)
 					.Text(FText::FromString("MyButton1"))
-				]
+				 ]
 			]
 			+SSplitter::Slot()
 			[
@@ -123,6 +127,20 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 				]
 			]
 		];
+
+	// 示例使用自己的样式文件
+	// 这个Style的加载方式 感觉不太对 先通过插件默认创建的Style 加载了自己的Style 绕了一圈
+
+	const  FMainWidgetStyle* MyWidgetStyle = &FSlateExerciseStyle::Get()
+	.GetWidgetStyle<FMainWidgetStyle>(TEXT("NewSlateWidgetStyleAsset"));
+	
+	AddSlot()
+		.Position(FVector2d(100,150))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SImage)
+		.Image(&MyWidgetStyle->MyBrush)
+	];
 	/*
 	ChildSlot
 	[

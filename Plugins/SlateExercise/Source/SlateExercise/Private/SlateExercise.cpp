@@ -18,22 +18,6 @@ static const FName MyWindowTabName2("MyWindow2");
 
 #define LOCTEXT_NAMESPACE "FSlateExerciseModule"
 
-void FSlateExerciseModule::AddToolbarExtension(FToolBarBuilder& ToolBarBuilder)
-{
-	// 这里是在拓展菜单栏 拓展后 出现在了Play按钮后边 这里 使用之前已经注册好的 打开插件窗口的命令
-	ToolBarBuilder.AddToolBarButton(FSlateExerciseCommands::Get().OpenPluginWindow);
-}
-
-void FSlateExerciseModule::AddMenuBarExtension(FMenuBarBuilder& MenuBarBuilder)
-{
-	// 这里是在拓展工具栏 拓展后 出现在了Play按钮后边 这里 使用之前已经注册好的 打开插件窗口的命令
-	MenuBarBuilder.AddMenuEntry(FSlateExerciseCommands::Get().OpenPluginWindow);
-}
-
-void FSlateExerciseModule::AddMenuExtension(FMenuBuilder& MenuBuilder)
-{
-	MenuBuilder.AddMenuEntry(FSlateExerciseCommands::Get().OpenPluginWindow);
-}
 
 void FSlateExerciseModule::StartupModule()
 {
@@ -113,6 +97,24 @@ void FSlateExerciseModule::ShutdownModule()
 	FSlateExerciseCommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(SlateExerciseTabName);
+}
+
+
+void FSlateExerciseModule::AddToolbarExtension(FToolBarBuilder& ToolBarBuilder)
+{
+	// 这里是在拓展菜单栏 拓展后 出现在了Play按钮后边 这里 使用之前已经注册好的 打开插件窗口的命令
+	ToolBarBuilder.AddToolBarButton(FSlateExerciseCommands::Get().OpenPluginWindow);
+}
+
+void FSlateExerciseModule::AddMenuBarExtension(FMenuBarBuilder& MenuBarBuilder)
+{
+	// 这里是在拓展工具栏 拓展后 出现在了Play按钮后边 这里 使用之前已经注册好的 打开插件窗口的命令
+	MenuBarBuilder.AddMenuEntry(FSlateExerciseCommands::Get().OpenPluginWindow);
+}
+
+void FSlateExerciseModule::AddMenuExtension(FMenuBuilder& MenuBuilder)
+{
+	MenuBuilder.AddMenuEntry(FSlateExerciseCommands::Get().OpenPluginWindow);
 }
 
 TSharedRef<SDockTab> FSlateExerciseModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
