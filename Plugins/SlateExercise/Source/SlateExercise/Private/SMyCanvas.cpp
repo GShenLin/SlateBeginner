@@ -141,6 +141,29 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 		SNew(SImage)
 		.Image(&MyWidgetStyle->MyBrush)
 	];
+
+	// SOverlay
+	AddSlot()
+		.Position(FVector2d(100,200))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SOverlay)
+		+SOverlay::Slot()
+		.HAlign(HAlign_Fill)
+		.VAlign(VAlign_Fill)
+		[
+			SNew(SImage)
+			.Image(&MyWidgetStyle->MyBrush)
+		]
+		
+		+SOverlay::Slot()
+		.HAlign(HAlign_Center)
+		.VAlign(VAlign_Center)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString("MyText"))
+		]
+	];
 	/*
 	ChildSlot
 	[
