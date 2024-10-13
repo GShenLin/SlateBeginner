@@ -52,7 +52,7 @@ Plugins/*/Binaries/*
 
 
 # Binary Files
-Plugins/*/Resources/*
+# Plugins/*/Resources/*
 
 # Builds
 Build/*

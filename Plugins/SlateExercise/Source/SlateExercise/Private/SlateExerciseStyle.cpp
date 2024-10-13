@@ -52,7 +52,7 @@ TSharedRef< FSlateStyleSet > FSlateExerciseStyle::Create()
 
 	// 插件的图片设置
 	FString ImagePath =  IPluginManager::Get().FindPlugin("SlateExercise")->GetBaseDir() / TEXT("Resources/Snipaste.png");
-	Style->Set("SlateExercise.OpenPluginWindow", new FSlateImageBrush(ImagePath, Icon20x20));
+	Style->Set("SlateExercise.OpenPluginWindow", new FSlateImageBrush(ImagePath, CoreStyleConstants::Icon128x128));
 	
 	return Style;
 }
