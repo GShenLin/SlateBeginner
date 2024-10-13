@@ -164,6 +164,47 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			.Text(FText::FromString("MyText"))
 		]
 	];
+
+	// STextBlock
+	// SOverlay
+	AddSlot()
+		.Position(FVector2d(100,250))
+		.Size(FVector2d(200,200))
+	[
+		SNew(STextBlock)
+		.Text(FText::FromString("MyTextBlock"))
+		.Justification(ETextJustify::Left) // 文本对齐方式
+		.Font(MyWidgetStyle->MyFontInfo) //字体
+		.AutoWrapText(true) // 自动换行
+	];
+
+	// SBox SBorder
+	AddSlot()
+		.Position(FVector2d(100,350))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SOverlay)
+		+SOverlay::Slot()
+		.HAlign(HAlign_Fill)
+		.VAlign(VAlign_Fill)
+		[
+			SNew(SBox)
+			.WidthOverride(200)
+			.HeightOverride(200)
+			[
+				SNew(SBorder)
+				.BorderImage(&MyWidgetStyle->MyBrush)
+				[
+					SNew(STextBlock)
+					.Text(FText::FromString("MyTextBlock"))
+					.Justification(ETextJustify::Left) // 文本对齐方式
+					.Font(MyWidgetStyle->MyFontInfo) //字体
+					.AutoWrapText(true) // 自动换行
+				]
+			]
+		]
+		
+	];
 	/*
 	ChildSlot
 	[
@@ -175,6 +216,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 FReply SMyCanvas::OnClickedButton()
 {
 	UE_LOG(LogTemp,Warning,TEXT("Button Clicked"));
+	FMessageDialog::Open(EAppMsgType::Ok,FText::FromString("Button Clicked"));
 	return FReply::Handled();
 }
 

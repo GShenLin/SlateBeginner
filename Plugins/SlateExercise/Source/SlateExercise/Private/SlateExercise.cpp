@@ -97,6 +97,8 @@ void FSlateExerciseModule::ShutdownModule()
 	FSlateExerciseCommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(SlateExerciseTabName);
+	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(MyWindowTabName1);
+	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(MyWindowTabName2);
 }
 
 
@@ -126,7 +128,8 @@ TSharedRef<SDockTab> FSlateExerciseModule::OnSpawnPluginTab(const FSpawnTabArgs&
 	if (!MyWindowTabManager.IsValid())
 	{
 		MyWindowTabManager = FGlobalTabmanager::Get()->NewTabManager(NomedTab);
-		MyWindowLayout = FTabManager::NewLayout("MyLayout")
+	}
+	MyWindowLayout = FTabManager::NewLayout("MyLayout")
 			->AddArea
 			(
 				FTabManager::NewPrimaryArea()
@@ -147,7 +150,6 @@ TSharedRef<SDockTab> FSlateExerciseModule::OnSpawnPluginTab(const FSpawnTabArgs&
 					->AddTab(MyWindowTabName2,ETabState::OpenedTab)
 				)
 			);
-	}
 	
 	TSharedRef<SWidget> TabContent = MyWindowTabManager->RestoreFrom(MyWindowLayout.ToSharedRef(),TSharedPtr<SWindow>()).ToSharedRef();
 	NomedTab->SetContent(TabContent);
@@ -161,21 +163,37 @@ bool FSlateExerciseModule::CanCloseTab()
 
 TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow1(const class FSpawnTabArgs& SpawnTabArgs)
 {
-	if (MainCanvasTab == nullptr)
+	/*if (MainCanvasTab == nullptr)
 	{
 		// 声明自己的DockTab 准备装填自己的Canvas
 		SAssignNew(MainCanvasTab,SDockTab)
 		// 绑定点击关闭按钮的回调
 		.OnCanCloseTab(SDockTab::FCanCloseTab::CreateRaw(this,&FSlateExerciseModule::CanCloseTab))
 		// 表示这个Tab的角色 是否能够合并什么的
-		.TabRole(MajorTab)
+		.TabRole(ETabRole::NomadTab)
+		[
+			SNew(SMyCanvas)
+		]
 		//设置Padding
 		.ContentPadding(FMargin(0));
 
 		// 将自定义的Canvas 设置为DockTab的内容
 		MainCanvasTab->SetContent(SNew(SMyCanvas));
-	}
-	return MainCanvasTab.ToSharedRef();
+	}*/
+	// 声明自己的DockTab 准备装填自己的Canvas
+	//return MainCanvasTab.ToSharedRef();
+
+	// 之前上边的写法 不知道出了什么BUG 具体没说 换成下边这种 就行了 应该是什么东西没清理 赋值之后 没去管理
+	
+	return  SNew(SDockTab)
+	// 绑定点击关闭按钮的回调
+	.OnCanCloseTab(SDockTab::FCanCloseTab::CreateRaw(this,&FSlateExerciseModule::CanCloseTab))
+	// 表示这个Tab的角色 是否能够合并什么的
+	.TabRole(ETabRole::NomadTab)
+	[
+		SNew(SMyCanvas)
+	];
+	
 }
 
 TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs)
