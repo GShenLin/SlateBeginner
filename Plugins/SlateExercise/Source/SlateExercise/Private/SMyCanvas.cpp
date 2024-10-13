@@ -6,8 +6,10 @@
 #include "MyMainWidgetStyle.h"
 #include "SlateExerciseStyle.h"
 #include "SlateOptMacros.h"
+#include "Widgets/Layout/SConstraintCanvas.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
 void SMyCanvas::Construct(const FArguments& InArgs)
 {
 	// 就像蓝图的Canvas控件一样 SCanvas支持多个Slot
@@ -181,7 +183,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 	// SBox SBorder
 	AddSlot()
 		.Position(FVector2d(100,350))
-		.Size(FVector2d(200,200))
+		.Size(FVector2d(100,100))
 	[
 		SNew(SOverlay)
 		+SOverlay::Slot()
@@ -209,7 +211,7 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 	// SButton
 	AddSlot()
 		.Position(FVector2d(100,450))
-		.Size(FVector2d(200,200))
+		.Size(FVector2d(100,100))
 	[
 		SNew(SButton)
 		.Text(FText::FromString("MyButton010101"))
@@ -218,6 +220,24 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 		.OnPressed_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("Pressed")); })
 		.OnReleased_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("Released")); })
 		.OnClicked_Lambda([]()->FReply{ UE_LOG(LogTemp,Warning,TEXT("Clicked")); return FReply::Handled(); })
+	];
+
+	// SConstrainCanvas
+	AddSlot()
+		.Position(FVector2d(100,550))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SConstraintCanvas)
+		+SConstraintCanvas::Slot()
+		.Anchors(0.f)
+		.Offset(FMargin(0,0,100,30))
+		.Alignment(FVector2D(0,0))
+		.AutoSize(false)
+		.ZOrder(0)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString("MyText1"))
+		]
 	];
 	/*
 	ChildSlot
