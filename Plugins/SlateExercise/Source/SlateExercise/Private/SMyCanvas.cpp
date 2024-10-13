@@ -205,6 +205,20 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 		]
 		
 	];
+
+	// SButton
+	AddSlot()
+		.Position(FVector2d(100,450))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SButton)
+		.Text(FText::FromString("MyButton010101"))
+		.OnHovered_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("Hovered")); })
+		.OnUnhovered_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("UnHovered")); })
+		.OnPressed_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("Pressed")); })
+		.OnReleased_Lambda([](){ UE_LOG(LogTemp,Warning,TEXT("Released")); })
+		.OnClicked_Lambda([]()->FReply{ UE_LOG(LogTemp,Warning,TEXT("Clicked")); return FReply::Handled(); })
+	];
 	/*
 	ChildSlot
 	[
