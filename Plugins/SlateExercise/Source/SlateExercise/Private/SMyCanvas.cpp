@@ -6,9 +6,12 @@
 #include "MyMainWidgetStyle.h"
 #include "SlateExerciseStyle.h"
 #include "SlateOptMacros.h"
+#include "Widgets/Input/SMultiLineEditableTextBox.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+#define LOCTEXT_NAMESPACE "SMyCanvas"
 
 void SMyCanvas::Construct(const FArguments& InArgs)
 {
@@ -301,12 +304,123 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			]
 		]
 	];
-	/*
-	ChildSlot
+
+	// SGridPanel
+	AddSlot()
+		.Position(FVector2d(500,550))
+		.Size(FVector2d(200,200))
 	[
-		// Populate the widget
+		SNew(SGridPanel)
+		.FillColumn(0,1) // 填充第0列 占比为1
+		.FillColumn(1,1) // 填充第1列 占比为1
+		.FillRow(0,1) // 填充第0行 占比为1
+		.FillRow(1,1)// 填充第1行 占比为1
+		+ SGridPanel::Slot(0,0)
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
+
+		+ SGridPanel::Slot(0,1)
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
+
+		+ SGridPanel::Slot(1,0)
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
+
+		+ SGridPanel::Slot(1,1)
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
 	];
-	*/
+
+	// SScrollBox
+	AddSlot()
+		.Position(FVector2d(700,550))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SScrollBox)
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button2"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button3"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button4"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button5"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button6"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button7"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button8"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button9"))
+		]
+		+SScrollBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button10"))
+		]
+	];
+
+	// ColorBrush
+	static FSlateColorBrush MyColorBrush = FSlateColorBrush(FLinearColor(1.0,1.0,1.0,0.5));
+	
+	// SMultilineEditableText
+	AddSlot()
+		.Position(FVector2d(900,550))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SBorder)
+		.BorderImage(&MyWidgetStyle->MyBrush)
+		[
+			SNew(SVerticalBox)
+			+SVerticalBox::Slot()
+			[
+				SNew(SMultiLineEditableTextBox)
+				//.Text(FText::FromString("MyMultilineEditableText"))
+				.HintText(LOCTEXT("text","请输入你的文本内容"))
+				.Font(MyWidgetStyle->MyFontInfo)
+				.AutoWrapText(true)
+			]
+		]
+		
+	];
 }
 
 FReply SMyCanvas::OnClickedButton()
