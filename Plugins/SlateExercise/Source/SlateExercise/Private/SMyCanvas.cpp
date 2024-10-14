@@ -239,6 +239,68 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			.Text(FText::FromString("MyText1"))
 		]
 	];
+
+	
+	// SCheckBox
+	// 提前设置一下CheckBox的数量
+	MyCheckBoxArray.SetNum(3);
+	
+	AddSlot()
+		.Position(FVector2d(400,550))
+		.Size(FVector2d(200,200))
+	[
+		// AI的自动提示 一个简单的CheckBox
+		SNew(SVerticalBox)
+		+SVerticalBox::Slot()
+		[
+			SNew(SCheckBox)
+			.OnCheckStateChanged_Lambda([](ECheckBoxState NewState){ UE_LOG(LogTemp,Warning,TEXT("CheckBox State Changed")); })
+		]
+		
+
+		// 操作一组CheckBox
+		+SVerticalBox::Slot()
+		[
+			// 添加第一个CheckBox
+			SAssignNew(MyCheckBoxArray[0],SCheckBox)
+			.IsEnabled(true) // 是否是激活状态
+			.IsChecked(ECheckBoxState::Checked) // 是否勾选
+			.OnCheckStateChanged(this,&SMyCanvas::OnCheckBoxStateChanged<0>) // 当状态改变时的回调
+			.Content()
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(TEXT("MyCheckBox1")))
+			]
+		]
+		
+		+SVerticalBox::Slot()
+		[
+			// 添加第二个CheckBox
+			SAssignNew(MyCheckBoxArray[1],SCheckBox)
+			.IsEnabled(true) // 是否是激活状态
+			.IsChecked(ECheckBoxState::Unchecked) // 是否勾选
+			.OnCheckStateChanged(this,&SMyCanvas::OnCheckBoxStateChanged<1>) // 当状态改变时的回调
+			.Content()
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(TEXT("MyCheckBox2")))
+			]
+		]
+		
+		+SVerticalBox::Slot()
+		[
+			// 添加第三个CheckBox
+			SAssignNew(MyCheckBoxArray[2],SCheckBox)
+			.IsEnabled(true) // 是否是激活状态
+			.IsChecked(ECheckBoxState::Unchecked) // 是否勾选
+			.OnCheckStateChanged(this,&SMyCanvas::OnCheckBoxStateChanged<2>) // 当状态改变时的回调
+			.Content()
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(TEXT("MyCheckBox3")))
+			]
+		]
+	];
 	/*
 	ChildSlot
 	[
