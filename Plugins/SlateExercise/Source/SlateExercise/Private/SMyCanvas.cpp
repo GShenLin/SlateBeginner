@@ -8,6 +8,7 @@
 #include "SlateOptMacros.h"
 #include "Widgets/Input/SMultiLineEditableTextBox.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
+#include "Widgets/Layout/SWrapBox.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -420,6 +421,38 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			]
 		]
 		
+	];
+
+	// SWrapBox
+	AddSlot()
+		.Position(FVector2d(900,550))
+		.Size(FVector2d(200,200))
+	[
+		SNew(SWrapBox)
+		.InnerSlotPadding(FVector2D(5,5)) // 子控件之间的间距
+		//.UseAllottedWidth(true) ?? 这个属性是干嘛的
+		+SWrapBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button1"))
+		]
+		+SWrapBox::Slot()
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button2"))
+		]
+		+SWrapBox::Slot()
+		.FillEmptySpace(true) // 如果有剩余空间 是否填充
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button3"))
+		]
+		+SWrapBox::Slot()
+		.FillLineWhenSizeLessThan(400.f) // 当宽度小于400时填充
+		[
+			SNew(SButton)
+			.Text(FText::FromString("Button4"))
+		]
 	];
 }
 
