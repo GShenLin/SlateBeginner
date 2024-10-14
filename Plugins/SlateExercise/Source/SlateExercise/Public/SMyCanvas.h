@@ -79,4 +79,12 @@ public:
 			}
 		}
 	}
+
+	// 用于树结构的演示
+	TArray<TSharedPtr<FString>> TreeRoots; // 根节点
+	TMap<FString,TArray<TSharedPtr<FString>>> ChildrenMap; // 子节点 每个根节点 对应多个子节点
+	// 当树生成时 绑定的回调函数 就是点小三角 展开的时候 展开后 如何显示子节点 要用这个函数来进行显示
+	TSharedRef<ITableRow> OnGenerateRowFromTree(TSharedPtr<FString> Item, const TSharedRef<STableViewBase>& OwnerTable);
+	// 获取子节点的回调函数
+	void OnGenerateChildrenFromTree(TSharedPtr<FString> InParent, TArray<TSharedPtr<FString>>& OutChildren);
 };

@@ -454,6 +454,39 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 			.Text(FText::FromString("Button4"))
 		]
 	];
+
+	// STreeView
+	TreeRoots.Add(MakeShared<FString>("MyRoot1"));
+	TreeRoots.Add(MakeShared<FString>("MyRoot2"));
+	TreeRoots.Add(MakeShared<FString>("MyRoot3"));
+
+	ChildrenMap.Add("MyRoot1",TArray<TSharedPtr<FString>>{
+		MakeShared<FString>("MyChild1"),
+		MakeShared<FString>("MyChild2")
+	});
+	ChildrenMap.Add("MyRoot2",TArray<TSharedPtr<FString>>{
+		MakeShared<FString>("MyChild1"),
+		MakeShared<FString>("MyChild2")
+	});
+	
+	AddSlot()
+	.Position(FVector2d(900,750))
+	.Size(FVector2d(300,300))
+	[
+		SNew(STreeView<TSharedPtr<FString>>)
+		.TreeItemsSource(&TreeRoots)
+		// 这段是自动生成的 没看太明白
+		/*.OnGenerateRow_Lambda([](TSharedPtr<FString> InItem, const TSharedRef<STableViewBase>& OwnerTable)->TSharedRef<ITableRow>
+		{
+			return SNew(STableRow<TSharedPtr<FString>>,OwnerTable)
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(*InItem))
+			];
+		})*/
+		.OnGenerateRow(this,&SMyCanvas::OnGenerateRowFromTree) // 当点开小三角时 如何展示子节点的回调
+		.OnGetChildren(this,&SMyCanvas::OnGenerateChildrenFromTree) // 获取子节点的回调
+	];
 }
 
 FReply SMyCanvas::OnClickedButton()
@@ -480,6 +513,31 @@ FText SMyCanvas::GetComboBoxCurrentLabel() const
 		return FText::FromString(*CurrentComboBoxString);
 	}
 	return FText::FromString("NULL");
+}
+
+TSharedRef<ITableRow> SMyCanvas::OnGenerateRowFromTree(TSharedPtr<FString> Item,
+	const TSharedRef<STableViewBase>& OwnerTable)
+{
+	return SNew(STableRow<TSharedPtr<FString>>,OwnerTable)
+	[
+		SNew(STextBlock)
+		.Text(FText::FromString(*Item))
+	];
+}
+
+void SMyCanvas::OnGenerateChildrenFromTree(TSharedPtr<FString> InParent, TArray<TSharedPtr<FString>>& OutChildren)
+{
+	// 写法1
+	/*if (ChildrenMap.Contains(*InParent))
+	{
+		OutChildren = ChildrenMap[*InParent];
+	}*/
+	// 写法2
+	const TArray<TSharedPtr<FString>> *MyChildren = ChildrenMap.Find(*InParent);
+	if (MyChildren)
+	{
+		OutChildren = *MyChildren;
+	}
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
