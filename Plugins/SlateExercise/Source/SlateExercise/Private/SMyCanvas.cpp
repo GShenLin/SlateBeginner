@@ -487,6 +487,20 @@ void SMyCanvas::Construct(const FArguments& InArgs)
 		.OnGenerateRow(this,&SMyCanvas::OnGenerateRowFromTree) // 当点开小三角时 如何展示子节点的回调
 		.OnGetChildren(this,&SMyCanvas::OnGenerateChildrenFromTree) // 获取子节点的回调
 	];
+
+	// ListView
+	ListViewItems.Add(MakeShared<FString>("MyItem1"));
+	ListViewItems.Add(MakeShared<FString>("MyItem2"));
+	ListViewItems.Add(MakeShared<FString>("MyItem3"));
+
+	AddSlot()
+	.Position(FVector2d(900,150))
+	.Size(FVector2d(300,300))
+	[
+		SNew(SListView<TSharedPtr<FString>>)
+		.ListItemsSource(&ListViewItems)
+		.OnGenerateRow(this,&SMyCanvas::OnGenerateRowFromListView)
+	];
 }
 
 FReply SMyCanvas::OnClickedButton()
@@ -538,6 +552,16 @@ void SMyCanvas::OnGenerateChildrenFromTree(TSharedPtr<FString> InParent, TArray<
 	{
 		OutChildren = *MyChildren;
 	}
+}
+
+TSharedRef<ITableRow> SMyCanvas::OnGenerateRowFromListView(TSharedPtr<FString> Item,
+	const TSharedRef<STableViewBase>& OwnerTable)
+{
+	return SNew(STableRow<TSharedPtr<FString>>,OwnerTable)
+	[
+		SNew(STextBlock)
+		.Text(FText::FromString(*Item))
+	];
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

@@ -87,4 +87,8 @@ public:
 	TSharedRef<ITableRow> OnGenerateRowFromTree(TSharedPtr<FString> Item, const TSharedRef<STableViewBase>& OwnerTable);
 	// 获取子节点的回调函数
 	void OnGenerateChildrenFromTree(TSharedPtr<FString> InParent, TArray<TSharedPtr<FString>>& OutChildren);
+
+	// 用于ListView
+	TArray<TSharedPtr<FString>> ListViewItems; // ListView的Item
+	TSharedRef<ITableRow> OnGenerateRowFromListView(TSharedPtr<FString> Item, const TSharedRef<STableViewBase>& OwnerTable);
 };
