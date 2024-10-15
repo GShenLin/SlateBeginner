@@ -5,6 +5,7 @@
 #include "SlateExerciseCommands.h"
 #include "LevelEditor.h"
 #include "SMyCanvas.h"
+#include "SMyLevelEditWidget.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
@@ -198,7 +199,11 @@ TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow1(const class FS
 
 TSharedRef<class SDockTab> FSlateExerciseModule::OnSpawnMyWindow2(const class FSpawnTabArgs& SpawnTabArgs)
 {
-	return SNew(SDockTab);
+	return SNew(SDockTab)
+		.TabRole(NomadTab)
+		[
+			SNew(SMyLevelEditWidget)
+		];
 }
 
 void FSlateExerciseModule::PluginButtonClicked()
