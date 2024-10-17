@@ -2,11 +2,13 @@
 
 #include "MyCommands.h"
 
-#define LOCTEXT_NAMESPACE "MyCommand"
+#include "SlateExerciseStyle.h"
+
+#define LOCTEXT_NAMESPACE "MyCommandName"
 FMyCommands::FMyCommands():TCommands(TEXT("MyMenu"),
                                      NSLOCTEXT("Contexts", "MyMenu", "MyMenu"),
                                      NAME_None,
-                                     FMyCommands::GetStyleSetName())
+                                     FSlateExerciseStyle::Get().GetStyleSetName())
 {
 	
 }
